@@ -3,7 +3,7 @@ extends Node
 @export var max_spoons: int = 4
 @export var spoons: int = max_spoons: set = set_spoons
 
-var last_convo_key = null
+var last_convo_key = "FudaiConvoData"
 
 signal no_spoons
 signal spoons_changed

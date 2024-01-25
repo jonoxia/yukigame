@@ -1,10 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=6 format=3 uid="uid://dg70g40nbq50d"]
 
-[ext_resource path="res://UI/ConvoData.gd" type="Script" id=1]
-[ext_resource path="res://UI/Conversation.gd" type="Script" id=2]
-[ext_resource path="res://Player/yuki1a.png" type="Texture2D" id=3]
-[ext_resource path="res://UI/SatoConvoData.gd" type="Script" id=4]
-[ext_resource path="res://Music and Sounds/fight-or-flight.mp3" type="AudioStream" id=5]
+[ext_resource type="Script" path="res://UI/ConvoData.gd" id="1"]
+[ext_resource type="Script" path="res://UI/Conversation.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://x136orf8n10x" path="res://Player/yuki1a.png" id="3"]
+[ext_resource type="Script" path="res://UI/SatoConvoData.gd" id="4"]
+[ext_resource type="AudioStream" uid="uid://4fjkmhgkww2j" path="res://Music and Sounds/fight-or-flight.mp3" id="5"]
 
 [node name="ConversationUIRoot" type="Node"]
 
@@ -13,29 +13,28 @@
 [node name="BackgroundImage" type="Sprite2D" parent="CanvasLayer"]
 
 [node name="SatoConvoData" type="Node" parent="CanvasLayer"]
-script = ExtResource( 4 )
+script = ExtResource("4")
 
 [node name="FudaiConvoData" type="Node" parent="CanvasLayer"]
-script = ExtResource( 1 )
+script = ExtResource("1")
 
 [node name="Conversation" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("2")
 
 [node name="Position2DB" type="Marker2D" parent="CanvasLayer/Conversation"]
-position = Vector2( 923.771, 255.466 )
+position = Vector2(923.771, 255.466)
 
 [node name="Position2DA" type="Marker2D" parent="CanvasLayer/Conversation"]
-position = Vector2( 401.36, 256.223 )
+position = Vector2(401.36, 256.223)
 
 [node name="Yuki" type="Sprite2D" parent="CanvasLayer/Conversation"]
-position = Vector2( 1041.08, 477.057 )
-scale = Vector2( 0.481796, 0.481796 )
-texture = ExtResource( 3 )
+position = Vector2(1041.08, 477.057)
+scale = Vector2(0.481796, 0.481796)
+texture = ExtResource("3")
 
 [node name="Sato" type="Sprite2D" parent="CanvasLayer/Conversation"]
 
@@ -45,6 +44,7 @@ texture = ExtResource( 3 )
 autostart = true
 
 [node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/Conversation"]
+layout_mode = 0
 anchor_top = 0.0872396
 anchor_right = 0.0314788
 anchor_bottom = 0.0872396
@@ -52,23 +52,16 @@ offset_left = 316.0
 offset_top = 487.51
 offset_right = 1339.74
 offset_bottom = 747.51
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ConvoModeLabel" type="Label" parent="CanvasLayer/Conversation/HBoxContainer"]
-offset_right = 1024.0
-offset_bottom = 14.0
+layout_mode = 2
 
 [node name="Menu Items" type="GridContainer" parent="CanvasLayer/Conversation/HBoxContainer"]
-offset_top = 18.0
-offset_right = 1024.0
-offset_bottom = 259.0
+layout_mode = 2
 size_flags_vertical = 3
 columns = 10
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 5 )
-autoplay = true
+stream = ExtResource("5")
 
 [connection signal="timeout" from="CanvasLayer/Conversation/Timer" to="CanvasLayer/Conversation" method="_on_Timer_timeout"]
