@@ -1,0 +1,107 @@
+[gd_scene load_steps=11 format=3 uid="uid://cw4yww41crvfb"]
+
+[ext_resource type="PackedScene" path="res://World/Bush.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://Player/Player.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://Enemies/NPC.tscn" id="3"]
+[ext_resource type="AudioStream" uid="uid://dw3e736qgrvqt" path="res://Music and Sounds/relaxed.mp3" id="4"]
+[ext_resource type="Texture2D" uid="uid://c0obmuiv7j0um" path="res://World/sample4.png" id="5"]
+[ext_resource type="PackedScene" path="res://UI/Spoons UI.tscn" id="6"]
+[ext_resource type="Script" path="res://world.gd" id="7"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0wi2g"]
+texture = ExtResource("5")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_80abf"]
+texture = ExtResource("5")
+margins = Vector2i(224, 432)
+texture_region_size = Vector2i(64, 64)
+0:0/next_alternative_id = 8
+0:0/0 = 0
+0:0/1 = 1
+0:0/1/flip_h = true
+0:0/2 = 2
+0:0/2/flip_v = true
+0:0/3 = 3
+0:0/3/flip_h = true
+0:0/3/flip_v = true
+0:0/4 = 4
+0:0/4/transpose = true
+0:0/5 = 5
+0:0/5/flip_h = true
+0:0/5/transpose = true
+0:0/6 = 6
+0:0/6/flip_v = true
+0:0/6/transpose = true
+0:0/7 = 7
+0:0/7/flip_h = true
+0:0/7/flip_v = true
+0:0/7/transpose = true
+
+[sub_resource type="TileSet" id="1"]
+tile_size = Vector2i(64, 64)
+sources/0 = SubResource("TileSetAtlasSource_0wi2g")
+sources/1 = SubResource("TileSetAtlasSource_80abf")
+
+[node name="world" type="Node2D"]
+script = ExtResource("7")
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="TileMap" type="TileMap" parent="Node2D"]
+rotation = 0.0105026
+tile_set = SubResource("1")
+format = 2
+layer_0/tile_data = PackedInt32Array(65537, 1, 0, 65538, 1, 0, 65539, 1, 0, 131073, 1, 0, 131074, 1, 0, 131075, 1, 0, 196609, 1, 0, 196610, 1, 0, 196611, 1, 0, 262145, 1, 0, 262146, 1, 0, 262147, 1, 0, 327681, 1, 0, 327682, 1, 0, 327683, 1, 0, 393217, 1, 0, 393218, 1, 0, 393219, 1, 0, 458753, 1, 0, 458754, 1, 0, 458755, 1, 0, 524289, 1, 0, 524290, 1, 0, 524291, 1, 0, 589825, 1, 0, 589826, 1, 0, 589827, 1, 0, 655361, 1, 0, 655362, 1, 0, 655363, 1, 0)
+
+[node name="Node2D" type="Node2D" parent="Node2D"]
+
+[node name="Bush" parent="Node2D/Node2D" instance=ExtResource("1")]
+position = Vector2(-50.138, 674.706)
+
+[node name="Bush7" parent="Node2D/Node2D" instance=ExtResource("1")]
+position = Vector2(296.365, 680.566)
+
+[node name="Bush4" parent="Node2D/Node2D" instance=ExtResource("1")]
+position = Vector2(466.237, 688.542)
+
+[node name="Bush2" parent="Node2D/Node2D" instance=ExtResource("1")]
+position = Vector2(28.362, 673.779)
+
+[node name="Bush5" parent="Node2D/Node2D" instance=ExtResource("1")]
+position = Vector2(386.939, 679.802)
+
+[node name="Bush3" parent="Node2D/Node2D" instance=ExtResource("1")]
+position = Vector2(520.424, 678)
+
+[node name="Bush6" parent="Node2D/Node2D" instance=ExtResource("1")]
+position = Vector2(-120.577, 671.243)
+
+[node name="Bush8" parent="Node2D/Node2D" instance=ExtResource("1")]
+position = Vector2(575.694, 669.176)
+
+[node name="Bush9" parent="Node2D/Node2D" instance=ExtResource("1")]
+position = Vector2(639.075, 671.209)
+
+[node name="Bush10" parent="Node2D/Node2D" instance=ExtResource("1")]
+position = Vector2(716.712, 673.52)
+
+[node name="Player" parent="Node2D" instance=ExtResource("2")]
+position = Vector2(385.632, 582.75)
+
+[node name="NPC (Fudai)" parent="Node2D" instance=ExtResource("3")]
+position = Vector2(189.798, 315.871)
+
+[node name="NPC (Sato)" parent="Node2D" instance=ExtResource("3")]
+position = Vector2(479.491, 314.494)
+
+[node name="Spoons UI" parent="." instance=ExtResource("6")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 0.344467
+offset_top = 0.344463
+offset_right = 132.344
+offset_bottom = 35.3445
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4")
+autoplay = true

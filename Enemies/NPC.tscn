@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Enemies/fudai_idle_1.png" type="Texture2D" id=1]
+[ext_resource path="res://Enemies/NPC.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 20.6938, 9.42404 )
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 61.6557
+
+[node name="NPC" type="CharacterBody2D"]
+script = ExtResource( 2 )
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2( 1.03339, -1.52588e-05 )
+texture = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 1.72232, 21.3566 )
+shape = SubResource( 1 )
+
+[node name="ThreatArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ThreatArea"]
+position = Vector2( 0.344482, 1.52588e-05 )
+shape = SubResource( 2 )
+
+[node name="VisionArea" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisionArea"]
+position = Vector2( 29.8419, 23.4234 )
+scale = Vector2( 0.836191, 1 )
+polygon = PackedVector2Array( -32.1002, -26.4234, 471.971, -387.423, 470.029, 335.577 )
+
+[connection signal="area_shape_entered" from="ThreatArea" to="." method="_on_ThreatArea_entered"]
+[connection signal="area_shape_entered" from="VisionArea" to="." method="_on_VisionArea_entered"]

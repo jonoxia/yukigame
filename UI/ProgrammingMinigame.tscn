@@ -1,0 +1,63 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://UI/DataEmitter.gd" type="Script" id=1]
+[ext_resource path="res://UI/ProgrammingMinigame.gd" type="Script" id=2]
+[ext_resource path="res://World/Grass.png" type="Texture2D" id=3]
+[ext_resource path="res://UI/HeartUIFull.png" type="Texture2D" id=4]
+[ext_resource path="res://UI/DataReceiver.gd" type="Script" id=5]
+[ext_resource path="res://Effects/HitEffect.png" type="Texture2D" id=6]
+[ext_resource path="res://UI/ReflectorWidget.gd" type="Script" id=7]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 27.397, 27.6089 )
+
+[sub_resource type="RectangleShape2D" id=2]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 24.2872, 11.8381 )
+
+[node name="ProgrammingMinigame" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="DataEmitter" type="Sprite2D" parent="."]
+position = Vector2( 217, 64 )
+texture = ExtResource( 3 )
+script = ExtResource( 1 )
+
+[node name="Timer" type="Timer" parent="DataEmitter"]
+autostart = true
+
+[node name="DataReceiver" type="Sprite2D" parent="."]
+position = Vector2( 226.5, 636.5 )
+texture = ExtResource( 4 )
+script = ExtResource( 5 )
+
+[node name="Area2D" type="Area2D" parent="DataReceiver"]
+position = Vector2( -226.5, -636.5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DataReceiver/Area2D"]
+position = Vector2( 225.384, 635.707 )
+shape = SubResource( 1 )
+
+[node name="ReflectorWidget" type="CharacterBody2D" parent="."]
+position = Vector2( 449.013, 232.638 )
+input_pickable = true
+script = ExtResource( 7 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ReflectorWidget"]
+position = Vector2( -449.013, -232.638 )
+shape = SubResource( 2 )
+
+[node name="Sprite2D" type="Sprite2D" parent="ReflectorWidget"]
+texture = ExtResource( 6 )
+
+[node name="Area2D" type="Area2D" parent="ReflectorWidget"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ReflectorWidget/Area2D"]
+position = Vector2( -1, 0.5 )
+shape = SubResource( 3 )
+
+[connection signal="timeout" from="DataEmitter/Timer" to="DataEmitter" method="_on_Timer_timeout"]
+[connection signal="area_entered" from="DataReceiver/Area2D" to="DataReceiver" method="_on_Area2D_area_entered"]
+[connection signal="body_entered" from="DataReceiver/Area2D" to="DataReceiver" method="_on_Area2D_body_entered"]
+[connection signal="input_event" from="ReflectorWidget" to="ReflectorWidget" method="_on_ReflectorWidget_input_event"]
