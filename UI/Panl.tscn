@@ -13,10 +13,10 @@ patch_margin_bottom = 8
 script = ExtResource("1_soep2")
 
 [node name="Position2DB" type="Marker2D" parent="."]
-position = Vector2(923.771, 255.466)
+position = Vector2(367, 118)
 
 [node name="Position2DA" type="Marker2D" parent="."]
-position = Vector2(401.36, 256.223)
+position = Vector2(30, 113)
 
 [node name="Yuki" type="Sprite2D" parent="."]
 position = Vector2(292, 287)

@@ -97,7 +97,6 @@ func start_conversation(node_name):
 	# examine whether convo_map["start"] is a dict or an array?pch
 	print("Starting exchange with next state = " + exchange[1])
 	self.start_exchange(exchange[0], exchange[1])
-   
 	
 	
 func start_exchange(dialog, next_state):
@@ -105,8 +104,11 @@ func start_exchange(dialog, next_state):
 	# Slide former panels left
 	for panel in self.panel_history:
 		var tween = self.create_tween()
-		var final_pos = Vector2(panel.position.x - 400, panel.position.y)
-		tween.tween_property(panel, "position", final_pos, 2)
+		var final_pos = Vector2(panel.position.x + 400, panel.position.y)
+		tween.tween_property(panel, "position", final_pos, 1)
+		# wait I should make all of the above tweeners simultaneous.
+		# Or... i don't move panels I just move the camera?
+		await tween.finished
 	
 	self.current_panel = PanelScene.instantiate()
 	self.current_panel.position = Vector2(200, 50)
@@ -117,7 +119,6 @@ func start_exchange(dialog, next_state):
 	self.current_panel.connect("exchange_ended", self._on_end_exchange)
 	# TODO will it cause any problem that multiple old panels could still be connected?
 	
-	#exchange_index = 0 # move to panel
 	hide_buttons()
 	self.text_resource = dialog # Needed anymore???
 	self.next_state = next_state

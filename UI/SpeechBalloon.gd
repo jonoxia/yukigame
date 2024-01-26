@@ -9,6 +9,7 @@ var inner_height = 40
 var ellipse_a = 50
 var ellipse_b = 40
 var text_tween = null
+var polygon_points = []
 
 var style = "normal"
 
@@ -92,6 +93,8 @@ func calc_normal_balloon_polygon(y_offset):
 	#for subarray in poly_coordinates:
 	#	poly_data.append(Vector2(subarray[0], subarray[1]))
 	self.set_polygon(poly_data)
+	poly_data.append(poly_data[0]) # Repeat last point to close it up
+	self.polygon_points = poly_data
 	
 func calc_thought_cloud_polygon(y_offset):
 	var poly_data = PackedVector2Array()
@@ -124,8 +127,12 @@ func calc_thought_cloud_polygon(y_offset):
 	
 	$RichText.set_position(Vector2(left_corneroid_x, center.y - inner_height/2)) #tip.x - 100, tip.y - 160))
 	self.set_polygon(poly_data)
+	poly_data.append(poly_data[0])
+	self.polygon_points = poly_data
 	# TODO: Add separate polygons for the bubble trail
 	
+func _draw():
+	draw_polyline(self.polygon_points, Color.BLACK, 2)
 
 func draw_speech_balloon(tip_pos, text, tail_is_left):
 	var richtext
@@ -150,11 +157,6 @@ func draw_speech_balloon(tip_pos, text, tail_is_left):
 	text_tween.tween_property(richtext, "visible_ratio", 1, 2)
 	text_tween.tween_callback(self._on_Text_tween_completed)
 	self.text_tween = text_tween
-	#$TextTween.interpolate_property(
-	#	richtext, "visible_ratio", 0, 1, 2,
-	#	Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
-	#)
-	#$TextTween.start()
 	
 func float_upward():
 	# TODO what do we do if this gets called again while
