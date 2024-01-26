@@ -2,19 +2,18 @@ extends Control
 
 var text_resource
 var exchange_index = 0
-var finished
-var active
-var yuki_texture = "a"
+
+var yuki_texture = "a"   # Move to be owned by panel
 var convo_key = null
 var convo_map = null
 var conversation_state = null
 var current_choice_dictionary = null
 var next_state = null
 
-var balloon_queue = []
-
 var current_topic = null
 var npc = null
+var panel_history = []
+var current_panel = null
 
 
 # Have a current conversation state, it presents you 
@@ -41,8 +40,8 @@ var npc = null
 # and the *question* has answers on it, but you can also ignore it to
 # pick one of your other conversation moves
 
-# Will instantiate copies of SpeechBalloon scene:
-var SpeechBalloonScene = preload("res://UI/SpeechBalloon.tscn")
+# Will instantiate copies of PanelScene:
+var PanelScene = preload("res://UI/Panl.tscn")
 var ConvoTopic = load("res://UI/ConvoTopic.gd").new()
 
 func _ready():	
@@ -66,18 +65,8 @@ func show_buttons(visible_buttons):
 		new_button.connect("pressed", Callable(self, "_on_choice_pressed").bind(button_name))
 		menuItems.add_child(new_button)
 
-
 func _physics_process(delta):
-	if active:
-		if Input.is_action_just_pressed("ui_accept"):
-			if finished:
-				continue_exchange()
-			else:
-				if len(balloon_queue) > 0:
-					var active_balloon = balloon_queue[-1]
-					active_balloon.skip_to_end()
-				
-				finished = true
+	pass
 	
 func start_conversation(node_name):
 	self.convo_map = get_parent().get_node(node_name).convo_map
@@ -105,54 +94,35 @@ func start_conversation(node_name):
 	var exchange = self.convo_map[ self.conversation_state ]
 	
 	# FUTURE TODO possible to go straight to a choice here maybe?
-	# examine whether convo_map["start"] is a dict or an array?
+	# examine whether convo_map["start"] is a dict or an array?pch
 	print("Starting exchange with next state = " + exchange[1])
 	self.start_exchange(exchange[0], exchange[1])
+   
+	
 	
 func start_exchange(dialog, next_state):
-	exchange_index = 0
+	
+	# Slide former panels left
+	for panel in self.panel_history:
+		var tween = self.create_tween()
+		var final_pos = Vector2(panel.position.x - 400, panel.position.y)
+		tween.tween_property(panel, "position", final_pos, 2)
+	
+	self.current_panel = PanelScene.instantiate()
+	self.current_panel.position = Vector2(200, 50)
+	self.current_panel.size = Vector2(500, 500)
+	self.panel_history.append(self.current_panel)
+	$CurrentPage.add_child(self.current_panel)
+	self.current_panel.set_text_resource(dialog)
+	self.current_panel.connect("exchange_ended", self._on_end_exchange)
+	# TODO will it cause any problem that multiple old panels could still be connected?
+	
+	#exchange_index = 0 # move to panel
 	hide_buttons()
-	self.text_resource = dialog
+	self.text_resource = dialog # Needed anymore???
 	self.next_state = next_state
-	continue_exchange()
-	
-func continue_exchange():
-	var tip_pos
-	if exchange_index < text_resource.size():
-		active = true
-		finished = false
-		var tail_is_left
-		if text_resource[exchange_index]["Position"] == "1":
-			tip_pos = $Position2DA
-			tail_is_left = true
-		else:
-			tip_pos = $Position2DB
-			tail_is_left = false
-		
-		# All previous balloons float upward
-		for balloon in balloon_queue:
-			balloon.float_upward()
-		var new_balloon = SpeechBalloonScene.instantiate()
-		
-		if text_resource[exchange_index].has("Balloon"):
-			new_balloon.set_style(text_resource[exchange_index]["Balloon"])
-		
-		# TODO is there a way to pass args to instance?
-		$SpeechBalloonGroup.add_child(new_balloon)
-		balloon_queue.append(new_balloon)
-		
-		new_balloon.connect("tween_finished", Callable(self, "on_tween_finished"))
-	
-		new_balloon.draw_speech_balloon(tip_pos,
-						text_resource[exchange_index]["Text"],
-						tail_is_left)
-		# TODO: Move all previous balloons in the ballon_queue
-		# upward, and delete any ones that scroll off screen
-		exchange_index += 1
-		
-	else:
-		end_exchange()
-		
+	self.current_panel.continue_exchange()
+
 
 func get_yuki_special_moves(interlocutor):
 	# TODO move this to the global yuki object??? because it depends on yuki's development
@@ -192,9 +162,7 @@ func get_yuki_special_moves(interlocutor):
 	special_moves["Kokuhaku"] = [kokuhaku_dialog, "A"]
 	return special_moves
 
-func end_exchange():
-	active = false
-	finished = true
+func _on_end_exchange():
 	
 	if self.next_state == null:
 		end_conversation()
@@ -223,8 +191,9 @@ func end_conversation():
 	print("Ending conversation")
 	Global.goto_scene("res://world.tscn")
 
-func on_tween_finished():
-	finished = true
+#func on_tween_finished():
+#	finished = true
+# Do we still need this?
 
 func _on_Timer_timeout():
 	# change animation sprites

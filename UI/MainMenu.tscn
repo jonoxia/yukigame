@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dg70g40nbq50d"]
+[gd_scene load_steps=5 format=3 uid="uid://dg70g40nbq50d"]
 
 [ext_resource type="Script" path="res://UI/ConvoData.gd" id="1"]
 [ext_resource type="Script" path="res://UI/Conversation.gd" id="2"]
-[ext_resource type="Texture2D" uid="uid://x136orf8n10x" path="res://Player/yuki1a.png" id="3"]
 [ext_resource type="Script" path="res://UI/SatoConvoData.gd" id="4"]
 [ext_resource type="AudioStream" uid="uid://4fjkmhgkww2j" path="res://Music and Sounds/fight-or-flight.mp3" id="5"]
 
@@ -25,23 +24,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("2")
 
-[node name="Position2DB" type="Marker2D" parent="CanvasLayer/Conversation"]
-position = Vector2(923.771, 255.466)
-
-[node name="Position2DA" type="Marker2D" parent="CanvasLayer/Conversation"]
-position = Vector2(401.36, 256.223)
-
-[node name="Yuki" type="Sprite2D" parent="CanvasLayer/Conversation"]
-position = Vector2(1041.08, 477.057)
-scale = Vector2(0.481796, 0.481796)
-texture = ExtResource("3")
-
-[node name="Sato" type="Sprite2D" parent="CanvasLayer/Conversation"]
-
-[node name="SpeechBalloonGroup" type="Node" parent="CanvasLayer/Conversation"]
-
-[node name="Timer" type="Timer" parent="CanvasLayer/Conversation"]
-autostart = true
+[node name="CurrentPage" type="Node2D" parent="CanvasLayer/Conversation"]
 
 [node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/Conversation"]
 layout_mode = 0
@@ -63,5 +46,3 @@ columns = 10
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5")
-
-[connection signal="timeout" from="CanvasLayer/Conversation/Timer" to="CanvasLayer/Conversation" method="_on_Timer_timeout"]
