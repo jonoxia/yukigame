@@ -19,17 +19,17 @@ func set_text_resource(text_resource):
 	self.text_resource = text_resource
 	
 func continue_exchange():
-	var tip_pos
+	var new_balloon_parent_node
 	if self.exchange_index < self.text_resource.size():
 		self.active = true
 		self.finished = false
 		var tail_is_left
 		var next_balloon = self.text_resource[self.exchange_index]
 		if next_balloon["Position"] == "1":
-			tip_pos = $Position2DA
+			new_balloon_parent_node = $Position2DA
 			tail_is_left = true
 		else:
-			tip_pos = $Position2DB
+			new_balloon_parent_node = $Position2DB
 			tail_is_left = false
 		
 		# All previous balloons float upward
@@ -41,13 +41,13 @@ func continue_exchange():
 			new_balloon.set_style(next_balloon["Balloon"])
 		
 		# TODO is there a way to pass args to instance?
-		$SpeechBalloonGroup.add_child(new_balloon)
+		#$SpeechBalloonGroup.add_child(new_balloon)
+		new_balloon_parent_node.add_child(new_balloon)
 		balloon_queue.append(new_balloon)
 		
 		new_balloon.connect("tween_finished", Callable(self, "on_tween_finished"))
 	
-		new_balloon.draw_speech_balloon(tip_pos,
-						next_balloon["Text"],
+		new_balloon.draw_speech_balloon(next_balloon["Text"],
 						tail_is_left)
 		# TODO: Move all previous balloons in the ballon_queue
 		# upward, and delete any ones that scroll off screen

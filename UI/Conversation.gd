@@ -101,20 +101,12 @@ func start_conversation(node_name):
 	
 func start_exchange(dialog, next_state):
 	
-	# Slide former panels left
-	for panel in self.panel_history:
-		var tween = self.create_tween()
-		var final_pos = Vector2(panel.position.x + 400, panel.position.y)
-		tween.tween_property(panel, "position", final_pos, 1)
-		# wait I should make all of the above tweeners simultaneous.
-		# Or... i don't move panels I just move the camera?
-		await tween.finished
-	
+
 	self.current_panel = PanelScene.instantiate()
-	self.current_panel.position = Vector2(200, 50)
+	self.current_panel.position = Vector2(200 - 510*len(self.panel_history), 50)
 	self.current_panel.size = Vector2(500, 500)
 	self.panel_history.append(self.current_panel)
-	$CurrentPage.add_child(self.current_panel)
+	$CanvasLayer/CurrentPage.add_child(self.current_panel)
 	self.current_panel.set_text_resource(dialog)
 	self.current_panel.connect("exchange_ended", self._on_end_exchange)
 	# TODO will it cause any problem that multiple old panels could still be connected?
@@ -168,6 +160,18 @@ func _on_end_exchange():
 	if self.next_state == null:
 		end_conversation()
 	else:
+		# Move the camera to make room for the new panel:
+		var camera = $CanvasLayer/Camera2D
+		print("Camera is current?")
+		print(camera.is_current())
+		var tween = self.create_tween()
+		var final_pos = camera.get_position() + Vector2(-400, 0)
+		tween.tween_property(camera, "position", final_pos, 1)
+		await tween.finished
+		#camera.set_position(final_pos)
+		print("Camera pos is now {x}, {y}".format({"x": camera.get_position().x, "y": camera.get_position().y}))	
+		
+		
 		self.conversation_state = self.next_state
 		self.next_state = null
 		# Now we're going to choice mode!

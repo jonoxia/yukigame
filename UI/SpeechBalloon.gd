@@ -134,10 +134,10 @@ func calc_thought_cloud_polygon(y_offset):
 func _draw():
 	draw_polyline(self.polygon_points, Color.BLACK, 2)
 
-func draw_speech_balloon(tip_pos, text, tail_is_left):
+func draw_speech_balloon(text, tail_is_left):
 	var richtext
 	
-	self.set_position(tip_pos.position)
+	#self.set_position(tip_pos.position)
 	#tip = tip_pos.position
 	richtext = $RichText
 		
